@@ -17,23 +17,16 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
-    %Calculate the error
-    Hypothesis = (X * theta ) .- y;
 
-    % Calculate J(theta)
-    J_derivative = Hypothesis' * X;
 
-    % Gradient descent theta calculation
-    theta = theta - ((alpha/m) * J_derivative');
+    theta = theta -  (alpha/m) * (((X * theta) - y)' * X )';
 
 
     % ============================================================
 
-    % Save the cost J in every iteration
+    % Save the cost J in every iteration    
     J_history(iter) = computeCostMulti(X, y, theta);
-
-    %disp (J_history(iter));
-    %disp (theta);
+   
 
 end
 

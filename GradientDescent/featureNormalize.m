@@ -26,12 +26,19 @@ sigma = zeros(1, size(X, 2));
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
 
-for idx=1:size(X,2)
-    mu(:, idx) = mean(X(:, idx));
-    sigma(:, idx) = std(X(:, idx));
 
-    X_norm(:, idx) = (X(:, idx) .- mu(:, idx)) ./ sigma(:, idx);
-end
+% Mean value returns in a row vector
+mu = mean(X);
+%disp(mu)
+
+% Standard deviation for each column in a row vector
+sigma = std(X);
+%disp(sigma)
+
+X_norm = (X .- mu) ./ sigma;
+
+
+
 
 % ============================================================
 
