@@ -17,24 +17,20 @@ grad = zeros(size(theta));
 %               Compute the partial derivatives and set grad to the partial
 %               derivatives of the cost w.r.t. each parameter in theta
 
-% h = g(X * theta)
-Hypothesis = sigmoid (X * theta);
+hypothesis = sigmoid(X * theta);
+%disp (size(hypothesis))
 
-% regularization Cost function
-reg_J = lambda/(2*m) * (theta(2:end, :)' * theta(2:end, :));
+% Regularization
+reg = (lambda / (2*m)) * sumsq(theta(2:end, :));
 
-% Cost function
-J = ( 1/m * (((-y)' * log (Hypothesis)) - ((1 - y)' * log (1 - Hypothesis)))) + reg_J;
+% Cost
+cost = (1/m) * sum( (-y .* log(hypothesis)) - ((1 .- y) .* log(1 .- hypothesis)));
+J = cost + reg;
 
-
-% ff
-reg_delta_J = (lambda/m) * theta;
-grad = 1/m * (((Hypothesis .- y)' * X)');
-
-% After Regularization, skip theta 0 
-grad(2:end, :) = grad(2:end, :) .+ reg_delta_J(2:end, :);
-
-
+% Gradient Calculation with regularization, skip theta 0
+reg_delta_J = (lambda / m) .* theta;
+grad = (1/m) * ((hypothesis - y)' * X )';
+grad(2:end, :) = grad(2:end, :) + reg_delta_J(2:end, :);
 
 % =============================================================
 

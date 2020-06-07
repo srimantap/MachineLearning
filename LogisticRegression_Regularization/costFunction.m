@@ -21,12 +21,13 @@ grad = zeros(size(theta));
 %
 
 
-% h = g(X * theta)
-Hypothesis = sigmoid (X * theta);
-J = 1/m * ( ((-y)' * log (Hypothesis)) - ((1 - y)' * log (1 - Hypothesis)) );
+hypothesis = sigmoid(X * theta);
+%disp (size(hypothesis))
 
-% Calculate gradient using vectorization 
-grad = 1/m * ((Hypothesis - y)' * X);
+J = (1/m) * sum( (-y .* log(hypothesis)) - ((1 .- y) .* log(1 .- hypothesis)));
+
+grad = (1/m) * ((hypothesis - y)' * X )';
+
 
 
 

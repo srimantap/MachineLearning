@@ -13,13 +13,14 @@ figure; hold on;
 %
 
 
-% Find Indices of Positive and Negative Examples
-pos = find(y==1); neg = find(y == 0);
-% Plot Examples
-plot(X(pos, 1), X(pos, 2), 'k+','LineWidth', 2, ...
-'MarkerSize', 7);
-plot(X(neg, 1), X(neg, 2), 'ko', 'MarkerFaceColor', 'y', ...
-'MarkerSize', 7);
+
+%fprintf(' x = [%.0f %.0f], y = %.0f \n', [X(1:10,:) y(1:10,:)]');
+admitted = find(y == 1);
+not_admitted = find(y == 0);
+
+plot(X(admitted, 1), X(admitted, 2), "k+", "markersize", 7);
+plot(X(not_admitted, 1), X(not_admitted, 2), "ko", "markerfacecolor", "y", "markersize", 7);
+
 
 
 % =========================================================================
