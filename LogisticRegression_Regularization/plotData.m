@@ -18,8 +18,10 @@ figure; hold on;
 admitted = find(y == 1);
 not_admitted = find(y == 0);
 
-plot(X(admitted, 1), X(admitted, 2), "k+", "markersize", 7);
-plot(X(not_admitted, 1), X(not_admitted, 2), "ko", "markerfacecolor", "y", "markersize", 7);
+plot(X(admitted, 1), X(admitted, 2), "k+", "markersize", 7, ...
+  "linewidth", 2);
+plot(X(not_admitted, 1), X(not_admitted, 2), "ko", "markerfacecolor", "y", ...
+  "markersize", 7);
 
 
 
