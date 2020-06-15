@@ -21,8 +21,7 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
-
-
+% Add ones to the X data matrix
 Input = [ones(m, 1) X];
 Hidden_z = Input * Theta1';
 Hidden_layer_output = [ones(m, 1) sigmoid(Hidden_z)];
@@ -32,7 +31,6 @@ Output = sigmoid(Output_z);
 
 [max_value indices] = max(Output, [], 2);
 p = indices;
-
 
 
 % =========================================================================

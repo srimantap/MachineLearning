@@ -9,6 +9,8 @@ if ~exist('example_width', 'var') || isempty(example_width)
 	example_width = round(sqrt(size(X, 2)));
 end
 
+%fprintf('example_height = %d ...\n', example_width);
+
 % Gray Image
 colormap(gray);
 

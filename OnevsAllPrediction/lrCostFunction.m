@@ -36,26 +36,25 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
-% Remove regularization for theta zero
 temp = theta;
 temp(1) = 0;
 
-% Cost function withour regularization
-Hypothesis = sigmoid (X * theta); % Hypothesis function
-J = 1.0/m * sum (
-    (-y .* log (Hypothesis))
-    .- ((1.0 .- y) .* (log(1.0 .- Hypothesis)))
-    );
+hypothesis = sigmoid(X * theta);
+%disp (size(hypothesis))
+
+% Cost without regularization
+cost = (1.0/m) * sum((-y .* log(hypothesis)) .- ((1.0 .- y) .* (log(1.0 .- hypothesis))));
+
+% Regularization
+reg = (lambda / (2*m)) * (temp' * temp);
 
 % Cost with regularization
-J_Delta = lambda/(2*m) * (temp' * temp); % Regularization value 
-J = J + J_Delta;
+J = cost + reg;
 
-% Gradient without regularization
-grad = 1.0/m * (X' * (Hypothesis .- y));
 
-% Gradient with regularization
-grad = grad .+ ((lambda/m) * temp);
+% Gradient Calculation with regularization
+grad = (1/m) * (X' * (hypothesis .- y));
+grad = grad .+ ((lambda / m) .* temp);
 
 
 % =============================================================
