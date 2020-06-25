@@ -63,48 +63,64 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
-% Calculate the hypothesis
-a1 = [ones(m, 1) X];
-z2 = a1 * Theta1';
-a2 = [ones(m, 1) sigmoid(z2)];
-z3 = a2 * Theta2';
-a3 = sigmoid(z3);
+% ====================== PART 1 ======================
 
-% Lets create a Y vector
-Y = zeros(m, num_labels);
-for i=1:m
-  index = y(i);
-  Y(i, index) = 1;
-end
+% Add column of ones to X
+Input_a_1 = [ones(m, 1) X];                    % size 5000 x 401
+Hidden_z_2 = Input_a_1 * Theta1';              % size :  Theta1 25 x 401, Hidden_z_2 5000 x 25
+Hidden_a_2 = [ones(m, 1) sigmoid(Hidden_z_2)]; % size Hidden_a_2 5000 x 26
 
-% Calculating Cost or forwardpass algorithm
-Theta1_square = sum(sum(Theta1(:, 2:end) .^ 2));
-Theta2_square = sum (sum( Theta2(:, 2:end) .^ 2));
-J_Delta = lambda/(2 * m) * (Theta1_square + Theta2_square);
+Output_z_3 = Hidden_a_2 * Theta2';             % size :  Theta2 10 x 26, Hidden_z_3 5000 x 10
+Output_a_3 = sigmoid(Output_z_3);              % size :  Hidden_a_3 5000 x 10
+%disp(size(Output_a_3));
 
-J = sum (1.0/m * sum (
-    (-Y .* log (a3))
-    .- ((1.0 .- Y) .* (log(1.0 .- a3)))
-    )) + J_Delta;
-    
-% Implementation of Backpropagation algorithm
-error_3 = a3 - Y;
-error_2 = (error_3 * Theta2(:, 2:end) ) .* sigmoidGradient(z2);
+% Need to resize the y classification vector according to the labels
+H_vector = zeros(m, num_labels);
+for index = 1:m
+  H_vector(index, y(index, 1)) = 1;
+endfor
 
-delta_1= error_2' * a1;
-delta_2= error_3' * a2;
+% Cost without regularization
+square_error = (-H_vector .* log(Output_a_3)) .- ((1.0 .- H_vector) .* ...
+                (log(1.0 .- Output_a_3)));
+J = (1.0/m) * sum(sum(square_error, 2));
 
-% Unregularized gradients
-Theta1_grad = 1/m * delta_1;
-Theta2_grad = 1/m * delta_2;
+% ====================== PART 2 ======================
 
-grad_delta1 = [zeros(size(Theta1, 1), 1) (lambda/m * Theta1(:, 2:end))];
-grad_delta2 = [zeros(size(Theta2, 1), 1) (lambda/m * Theta2(:, 2:end))];
 
-% Regularized gradient
-Theta1_grad = Theta1_grad + grad_delta1;
-Theta2_grad = Theta2_grad + grad_delta2;
+% size : delta_3 = 5000 x 10
+delta_3 = Output_a_3 .- H_vector;
 
+% size : delta_3 = 5000 x 10, Theta2 = 10 x 26, Hidden_z_2 = 5000 x 25
+delta_2 = (delta_3 * Theta2(:, 2:end)) .* sigmoidGradient(Hidden_z_2);
+
+Theta1_grad = (1/m) * (Theta1_grad .+ (delta_2' * Input_a_1));
+Theta2_grad = (1/m) * (Theta2_grad .+ (delta_3' * Hidden_a_2));
+
+
+% ====================== PART 3 ======================
+
+% With regularization
+
+% Regularization entities
+Theta1_temp = Theta1;
+Theta1_temp(:, 1) = 0;
+Reg_theta1 = sum(sum(Theta1_temp .^ 2));
+
+Theta2_temp = Theta2;
+Theta2_temp(:, 1) = 0; 
+Reg_theta2 = sum(sum(Theta2_temp .^ 2));
+
+Reg_cost = (lambda /(2 * m)) * (Reg_theta1 + Reg_theta2);
+Reg_theta1_grad = (lambda / m) * Theta1_temp;
+Reg_theta2_grad = (lambda / m) * Theta2_temp;
+
+% Cost with regularization
+J = J + Reg_cost;
+
+% Gradient regularization
+Theta1_grad = Theta1_grad .+ Reg_theta1_grad;
+Theta2_grad = Theta2_grad .+ Reg_theta2_grad;
 
 
 
