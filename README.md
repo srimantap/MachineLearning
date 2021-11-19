@@ -8,7 +8,7 @@ This are few of the exercises that I have done as one of my hobby project to enh
 - Octave
 
 
-## Basic executaion
+## Basic execution
 
 These are the basic steps required for you to use the code. Each folder contains a separate method or step. Each directory are stand by itself. All the related codes are contained within its directory. Example of using a particular folder is basically goes through like this:
 
